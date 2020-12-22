@@ -20,16 +20,17 @@ def label(df, texts):
 
     for i, row in df.iterrows():
         song_name, artist, lyrics, sexual_content, women_denigration, drugs = row
-        if sexual_content == -1 and women_denigration == -1:
+        if sexual_content == -1 or women_denigration == -1 or drugs == -1:
+            print("######### START OF NEW SONG ####################################")
             print(lyrics)
             sexual_value = input_label(texts, "sexual_content")
             denigration_value = input_label(texts, "women_denigration")
             drugs_value = input_label(texts, "drugs")
             df.at[i, "sexual_content"] = int(sexual_value)
             df.at[i, "women_denigration"] = int(denigration_value)
-            df.at[i, "drugs"] = int(denigration_value)
+            df.at[i, "drugs"] = int(drugs_value)
 
-            print("\n" + song_name)
+            print("\n" + str(song_name))
             # type y for updating otherwise continue
 
             update = input_label(texts, "update song_name")
@@ -42,12 +43,11 @@ def label(df, texts):
         else:
             continue
 
-        break
-
 
 if __name__ == "__main__":
 
     import sys
+    import os
     import pandas as pd
 
     df = pd.read_csv("..\data\lyrics_labeled.csv")
