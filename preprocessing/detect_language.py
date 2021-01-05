@@ -80,11 +80,13 @@ def update_lyrics(lyrics):
     """
     paragraphs = lyrics.split("\r\n\r\n")
     updated_lyrics = list()
+    paragraphs_deleted = 0
     for paragraph in paragraphs:
         paragraph_lang = detect_songs_language(paragraph)
 
         # If the paragraph has more than one language skip it
         if len(paragraph_lang) > 1:
+            paragraphs_deleted += 1
             continue
 
         lang, prob = paragraph_lang[0]
@@ -92,12 +94,66 @@ def update_lyrics(lyrics):
         if lang == "es":
             updated_lyrics.append(paragraph)
         else:
-            print("This paragraph was deleted")
-            print(paragraph)
+            paragraphs_deleted += 1
 
     lyrics = "\r\n\r\n".join(updated_lyrics)
 
     return lyrics
+
+
+def delete_no_spanish(df, lang_threshold):
+    """
+    Takes the songs dataframe and detects the lyrics
+    language. If the lyrics is completely in spanish
+    keep it, if it is a combination but the first
+    language is spanish (over the lang_threshold) delete the 
+    non-spanish parts. Otherwise options delete the lyrics 
+    Args:
+        df: pandas dataframe
+        lang_threshold: float
+    returns:
+        updated_df: pandas dataframe
+    """
+    delete_songs_index = list()
+    no_complete_spanish_index = list()
+
+    deleted_songs_count = 0
+    no_spanish_count = 0
+    for index, lyrics in df.lyrics.iteritems():
+        lang_probs = detect_songs_language(lyrics)
+
+        # If true it means the song has more than one language
+        if len(lang_probs) > 1:
+            # the first entry is the language with the highest probability
+            lang, prob = lang_probs[0]
+
+            if (lang == "es") and (prob > lang_threshold):
+                no_complete_spanish_index.append(index)
+                no_spanish_count += 1
+            else:
+                deleted_songs_count += 1
+                delete_songs_index.append(index)
+        # If just one language check for spanish
+        else:
+            lang, prob = lang_probs[0]
+            if lang != "es":
+                delete_songs_index.append(index)
+                deleted_songs_count += 1
+
+    # Clean the lyrics that are not entirely in spanish
+    for index in no_complete_spanish_index:
+        lyrics = df.iloc[index].lyrics
+        new_lyrics = update_lyrics(lyrics)
+
+        # change the lyrics in the dataframe
+        df.at[index, "lyrics"] = new_lyrics
+
+    # Delete non-spanish songs
+    updated_df = delete_rows(df, delete_songs_index)
+    print(f"Amount of songs deleted: {deleted_songs_count}")
+    print(f"Amount of no-complete spanish: {no_spanish_count}")
+
+    return updated_df
 
 
 if __name__ == "__main__":
@@ -106,50 +162,7 @@ if __name__ == "__main__":
 
     songs = pd.read_csv(data_path)
 
-    prueba = songs[:100]
-
-    def main(df, lang_threshold):
-        # Store the indexes of the songs that are not in spanish or don't achieve the threshold
-        delete_songs = list()
-
-        # Store the indexes that are not complete spanish but achieve the threshold
-        no_complete_spanish = list()
-
-        count = 0
-        no_spanish_count = 0
-        for index, lyrics in df.lyrics.iteritems():
-            lang_probs = detect_songs_language(lyrics)
-
-            # If true it means the song has more than one language
-            if len(lang_probs) > 1:
-
-                # The first entry is the language with the highest probability
-                lang, prob = lang_probs[0]
-
-                if (lang == "es") and (prob > lang_threshold):
-                    no_complete_spanish.append(index)
-                    no_spanish_count += 1
-                else:
-                    count += 1
-                    delete_songs.append(index)
-
-            else:
-                # when just one language check it is only spanish
-                lang, prob = lang_probs[0]
-                if lang != "es":
-                    delete_songs.append(index)
-                    count += 1
-
-        # clean the lyrics that are not entirely in spanish
-        for index in no_complete_spanish:
-            lyrics = df.iloc[index].lyrics
-            new_lyrics = update_lyrics(lyrics)
-
-            # Change the dataframe in place
-            df.at[index, "lyrics"] = new_lyrics
-
-        songs_updated = delete_rows(df, delete_songs)
-        songs_updated.to_csv("..\data\only_spanish_lyrics.csv", index=False)
-
-    main(prueba, lang_threshold)
+    prueba = songs[:200]
+    songs_updated = delete_no_spanish(prueba, lang_threshold)
+    songs_updated.to_csv("..\data\only_spanish_lyrics.csv", index=False)
 
