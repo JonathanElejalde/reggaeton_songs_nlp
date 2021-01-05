@@ -157,12 +157,13 @@ def delete_no_spanish(df, lang_threshold):
 
 
 if __name__ == "__main__":
-    data_path = "..\data\lyrics_labeled.csv"
-    lang_threshold = 0.80
+    pass
+    # data_path = "..\data\lyrics_labeled.csv"
+    # lang_threshold = 0.80
 
-    songs = pd.read_csv(data_path)
+    # songs = pd.read_csv(data_path)
 
-    prueba = songs[:200]
-    songs_updated = delete_no_spanish(prueba, lang_threshold)
-    songs_updated.to_csv("..\data\only_spanish_lyrics.csv", index=False)
+    # prueba = songs[:200]
+    # songs_updated = delete_no_spanish(prueba, lang_threshold)
+    # songs_updated.to_csv("..\data\only_spanish_lyrics.csv", index=False)
 
