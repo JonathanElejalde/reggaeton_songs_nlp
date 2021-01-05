@@ -163,7 +163,7 @@ def spell_checking(lyrics, spellchecker):
             for word in words:
                 correction = spellchecker.correction(word)
                 if word != correction:
-                    print(word, ": ", correction)
+                    # print(word, ": ", correction)
                     word = correction
 
                 new_words.append(word)
