@@ -51,7 +51,7 @@ def avoid_repetition(lyrics, mode="paragraphs"):
 
             if split == split2:
                 duplicate_index.append(j)
-    # print(duplicate_index)
+    print(f"These are the duplicated indixes: {duplicate_index}")
     # if mode == "lines":
     #     print(f"Amount of empty lines {empty_lines}")
 
@@ -67,21 +67,43 @@ def avoid_repetition(lyrics, mode="paragraphs"):
     return lyrics
 
 
-def remove_repeated_lines(lyrics):
+def remove_short_lines(lyrics):
     """
-    Takes the lyrics of a song without repeated paragraphs
-    and removes any line that appears more than once
+    Takes the lyrics of a song and removes
+    lines with less than 3 words. Normally
+    these lines don't have any meaningful meaning
     """
+    paragraphs = lyrics.split("\r\n\r\n")
+    new_paragraphs = list()
+    new_lines = list()
+
+    for paragraph in paragraphs:
+        lines = paragraph.split("\r\n")
+        for line in lines:
+            tokens = line.split()
+
+            if len(tokens) < 3:
+                continue
+            else:
+                new_line = " ".join(tokens)
+                new_lines.append(new_line)
+
+        new_paragraph = "\r\n".join(new_lines)
+        new_paragraphs.append(new_paragraph)
+        new_lines = list()
+
+    lyrics = "\r\n\r\n".join(new_paragraphs)
+
+    return lyrics
 
 
 # save a csv with clean text and spelling correction and without removing the repeated paragraphs and lines
-# Delete words and phrases between () {} []
-# Delete repeated paragraphs
-# delete repeated lines
-# delete short lines - meaning lines with less than 3 words normally don't bring meaningful meaning
 # delete punctuation
 # delete special characters
 # delete numbers
+
+# Run the cleaning again after spelling because there are some that still are the same lines but
+# because of one single character are different
 
 if __name__ == "__main__":
     data_path = "..\data\lyrics_labeled.csv"
@@ -92,9 +114,13 @@ if __name__ == "__main__":
 
     # prueba["lyrics"] = prueba.lyrics.apply(lambda x: remove_text(x))
 
-    l = prueba.iloc[0]
+    l = prueba.iloc[2]
     l = l.lyrics
+    l = remove_text(l)
     l = avoid_repetition(l)
     l = avoid_repetition(l, mode="lines")
-    print(l)
+    l = remove_short_lines(l)
 
+    print(l)
+    # final = avoid_repetition(l)
+    # final = avoid_repetition(final, mode="lines")
