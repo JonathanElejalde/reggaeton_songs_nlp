@@ -2,14 +2,31 @@ import pandas as pd
 import re
 
 
-def remove_text(lyrics):
+def remove_text_numbers(lyrics):
     """
     Takes the lyrics of a song and removes everything inside
-    () or {} or []
+    () or {} or [] and any number
     """
     pattern = r"[\(\[\{].*?[\)\]\}]"
     replace = ""
     new_lyrics = re.sub(pattern, replace, lyrics)
+
+    # delete numbers
+    number_pattern = r"\d+"
+    new_lyrics = re.sub(number_pattern, replace, new_lyrics)
+
+    return new_lyrics
+
+
+def remove_special_chars(lyrics):
+    """
+    Takes the lyrics of a song and removes
+    any special characters
+    """
+
+    replace = ""
+    special_char_pattern = r"[^a-zA-Z \n\.]"
+    new_lyrics = re.sub(special_char_pattern, replace, lyrics)
 
     return new_lyrics
 
@@ -51,7 +68,7 @@ def avoid_repetition(lyrics, mode="paragraphs"):
 
             if split == split2:
                 duplicate_index.append(j)
-    print(f"These are the duplicated indixes: {duplicate_index}")
+    # print(f"These are the duplicated indixes: {duplicate_index}")
     # if mode == "lines":
     #     print(f"Amount of empty lines {empty_lines}")
 
@@ -97,30 +114,20 @@ def remove_short_lines(lyrics):
     return lyrics
 
 
-# save a csv with clean text and spelling correction and without removing the repeated paragraphs and lines
-# delete punctuation
-# delete special characters
-# delete numbers
-
-# Run the cleaning again after spelling because there are some that still are the same lines but
-# because of one single character are different
-
 if __name__ == "__main__":
     data_path = "..\data\lyrics_labeled.csv"
 
     songs = pd.read_csv(data_path)
 
-    prueba = songs[:10]
+    prueba = songs[:15]
 
     # prueba["lyrics"] = prueba.lyrics.apply(lambda x: remove_text(x))
 
-    l = prueba.iloc[2]
-    l = l.lyrics
-    l = remove_text(l)
-    l = avoid_repetition(l)
-    l = avoid_repetition(l, mode="lines")
-    l = remove_short_lines(l)
+    # l = prueba.iloc[4]
+    # l = l.lyrics
+    # l = remove_text(l)
+    # l = avoid_repetition(l)
+    # l = avoid_repetition(l, mode="lines")
+    # l = remove_short_lines(l)
 
-    print(l)
-    # final = avoid_repetition(l)
-    # final = avoid_repetition(final, mode="lines")
+    # print(l)
