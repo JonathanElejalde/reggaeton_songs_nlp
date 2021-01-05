@@ -152,7 +152,7 @@ def spell_checking(lyrics, spellchecker):
     new_lines = list()
     new_paragraphs = list()
     new_words = list()
-    paragraphs = song1.split("\r\n\r\n")
+    paragraphs = lyrics.split("\r\n\r\n")
     for paragraph in paragraphs:
         lines = paragraph.split("\r\n")
 
@@ -179,9 +179,9 @@ def spell_checking(lyrics, spellchecker):
         new_lines = list()
 
     # finally join the paragraphs into a full song
-    lyrics = "\r\n\r\n".join(new_paragraphs)
+    new_lyrics = "\r\n\r\n".join(new_paragraphs)
 
-    return lyrics
+    return new_lyrics
 
 
 if __name__ == "__main__":
