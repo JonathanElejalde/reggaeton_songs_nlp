@@ -36,14 +36,21 @@ def detect_songs_language(song_lyrics):
     returns:
         lang_probs = list of tuples (lang, probability)
     """
-    probs = langdetect.detect_langs(song_lyrics)
-    lang_probs = list()
-    for prob in probs:
-        str_lang_prob = str(prob)
-        lang_prob = get_lang_probability(str_lang_prob)
-        lang_probs.append(lang_prob)
+    try:
+        probs = langdetect.detect_langs(song_lyrics)
+        lang_probs = list()
+        for prob in probs:
+            str_lang_prob = str(prob)
+            lang_prob = get_lang_probability(str_lang_prob)
+            lang_probs.append(lang_prob)
 
-    return lang_probs
+        return lang_probs
+    except Exception as e:
+        print(e)
+        # if error return no english language
+        # to delete that particular song
+        lang_probs = [("en", 0.9)]
+        return lang_probs
 
 
 def delete_rows(df, rows):
