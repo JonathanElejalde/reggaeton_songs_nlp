@@ -21,7 +21,10 @@ def label(df, texts):
     for i, row in df.iterrows():
         song_name, artist, lyrics, sexual_content, women_denigration, drugs = row
         if sexual_content == -1 or women_denigration == -1 or drugs == -1:
-            print("######### START OF NEW SONG ####################################")
+
+            print(
+                f"######### START OF NEW SONG #################################### Song number {i}"
+            )
             print(lyrics)
             sexual_value = input_label(texts, "sexual_content")
             denigration_value = input_label(texts, "women_denigration")
