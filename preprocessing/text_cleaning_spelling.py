@@ -9,13 +9,19 @@ def remove_text_numbers(lyrics):
     Takes the lyrics of a song and removes everything inside
     () or {} or [] and any number
     """
-    pattern = r"[\(\[\{].*?[\)\]\}]"
-    replace = ""
-    new_lyrics = re.sub(pattern, replace, lyrics)
+    try:
+        pattern = r"[\(\[\{].*?[\)\]\}]"
+        replace = ""
+        new_lyrics = re.sub(pattern, replace, lyrics)
+    except:
+        new_lyrics = lyrics
 
-    # delete numbers
-    number_pattern = r"\d+"
-    new_lyrics = re.sub(number_pattern, replace, new_lyrics)
+    try:
+        # delete numbers
+        number_pattern = r"\d+"
+        new_lyrics = re.sub(number_pattern, replace, new_lyrics)
+    except:
+        new_lyrics = new_lyrics
 
     return new_lyrics
 
@@ -41,49 +47,53 @@ def avoid_repetition(lyrics, mode="paragraphs"):
         lyrics: str
         mode: str. It can be paragraphs or lines
     """
-    if mode == "paragraphs":
-        splits = lyrics.split("\r\n\r\n")
-    elif mode == "lines":
-        splits = lyrics.split("\r\n")
+    try:
+        if mode == "paragraphs":
+            splits = lyrics.split("\r\n\r\n")
+        elif mode == "lines":
+            splits = lyrics.split("\r\n")
 
-    new_lyrics = list()
-    duplicate_index = list()
+        new_lyrics = list()
+        duplicate_index = list()
 
-    empty_lines = 0
-    for i, split in enumerate(splits):
-        split = split.strip()
+        empty_lines = 0
+        for i, split in enumerate(splits):
+            split = split.strip()
 
-        # avoid looping through duplicates
-        if i in duplicate_index:
-            continue
-
-        # avoid empty lines
-        if len(split) <= 1:
-            empty_lines += 1
-            continue
-
-        for j, split2 in enumerate(splits):
-            split2 = split2.strip()
-
-            if i == j:
+            # avoid looping through duplicates
+            if i in duplicate_index:
                 continue
 
-            if split == split2:
-                duplicate_index.append(j)
-    # print(f"These are the duplicated indixes: {duplicate_index}")
-    # if mode == "lines":
-    #     print(f"Amount of empty lines {empty_lines}")
+            # avoid empty lines
+            if len(split) <= 1:
+                empty_lines += 1
+                continue
 
-    for i, split in enumerate(splits):
-        if i not in duplicate_index:
-            new_lyrics.append(split)
+            for j, split2 in enumerate(splits):
+                split2 = split2.strip()
 
-    if mode == "paragraphs":
-        lyrics = "\r\n\r\n".join(new_lyrics)
-    elif mode == "lines":
-        lyrics = "\r\n".join(new_lyrics)
+                if i == j:
+                    continue
 
-    return lyrics
+                if split == split2:
+                    duplicate_index.append(j)
+        # print(f"These are the duplicated indixes: {duplicate_index}")
+        # if mode == "lines":
+        #     print(f"Amount of empty lines {empty_lines}")
+
+        for i, split in enumerate(splits):
+            if i not in duplicate_index:
+                new_lyrics.append(split)
+
+        if mode == "paragraphs":
+            lyrics = "\r\n\r\n".join(new_lyrics)
+        elif mode == "lines":
+            lyrics = "\r\n".join(new_lyrics)
+
+        return lyrics
+    except Exception as e:
+        print(e)
+        return lyrics
 
 
 def remove_short_lines(lyrics):
@@ -92,28 +102,33 @@ def remove_short_lines(lyrics):
     lines with less than 3 words. Normally
     these lines don't have any meaningful meaning
     """
-    paragraphs = lyrics.split("\r\n\r\n")
-    new_paragraphs = list()
-    new_lines = list()
-
-    for paragraph in paragraphs:
-        lines = paragraph.split("\r\n")
-        for line in lines:
-            tokens = line.split()
-
-            if len(tokens) < 3:
-                continue
-            else:
-                new_line = " ".join(tokens)
-                new_lines.append(new_line)
-
-        new_paragraph = "\r\n".join(new_lines)
-        new_paragraphs.append(new_paragraph)
+    try:
+        paragraphs = lyrics.split("\r\n\r\n")
+        new_paragraphs = list()
         new_lines = list()
 
-    lyrics = "\r\n\r\n".join(new_paragraphs)
+        for paragraph in paragraphs:
+            lines = paragraph.split("\r\n")
+            for line in lines:
+                tokens = line.split()
 
-    return lyrics
+                if len(tokens) < 3:
+                    continue
+                else:
+                    new_line = " ".join(tokens)
+                    new_lines.append(new_line)
+
+            new_paragraph = "\r\n".join(new_lines)
+            new_paragraphs.append(new_paragraph)
+            new_lines = list()
+
+        lyrics = "\r\n\r\n".join(new_paragraphs)
+
+        return lyrics
+
+    except Exception as e:
+        print(e)
+        return lyrics
 
 
 def add_artists(df, spellchecker):
@@ -157,7 +172,7 @@ def spell_checking(lyrics, spellchecker):
         lines = paragraph.split("\r\n")
 
         for line in lines:
-            words = [word for word in line.split()]
+            words = line.split()
 
             # check each word
             for word in words:
