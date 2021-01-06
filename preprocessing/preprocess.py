@@ -34,9 +34,16 @@ def preprocess(df, lang_threshold):
     # Apply spelling correction
     spell = SpellChecker(language="es")
     spell = add_artists(updated_df, spell)
-    updated_df["lyrics"] = updated_df.lyrics.apply(lambda x: spell_checking(x, spell))
 
-    return updated_df
+    for index, lyrics in updated_df.lyrics.iteritems():
+        new_lyrics = spell_checking(lyrics, spell)
+        updated_df.at[index, "lyrics"] = new_lyrics
+
+        if index % 10 == 0:
+            updated_df.to_csv("..\\data\\updated_lyrics.csv", index=False)
+
+        if index % 100 == 0:
+            print(f"{index} songs checked")
 
 
 if __name__ == "__main__":
@@ -45,5 +52,4 @@ if __name__ == "__main__":
     songs = pd.read_csv(data_path)
     prueba = songs[:100]
 
-    updated_df = preprocess(prueba, lang_threshold)
-    updated_df.to_csv("..\\data\\updated_lyrics.csv", index=False)
+    preprocess(prueba, lang_threshold)
