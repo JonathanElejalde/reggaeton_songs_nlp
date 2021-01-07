@@ -48,8 +48,8 @@ def preprocess(df, lang_threshold):
 
 if __name__ == "__main__":
     data_path = "..\\data\\lyrics_labeled.csv"
-    lang_threshold = 0.8
+    lang_threshold = 0.7
     songs = pd.read_csv(data_path)
-    prueba = songs[:100]
+    # prueba = songs[:100]
 
-    preprocess(prueba, lang_threshold)
+    preprocess(songs, lang_threshold)
