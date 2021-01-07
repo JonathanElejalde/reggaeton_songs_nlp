@@ -42,7 +42,7 @@ def label(df, texts):
                 df.at[i, "song_name"] = new_name
 
             # save df
-            df.to_csv("..\data\lyrics_labeled.csv", index=False)
+            df.to_csv("..\\data\\updated_lyrics.csv", index=False)
         else:
             continue
 
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     import os
     import pandas as pd
 
-    df = pd.read_csv("..\data\lyrics_labeled.csv")
+    df = pd.read_csv("..\\data\\updated_lyrics.csv")
     texts = {
         "sexual_content": "\nAdd 0 for non_sexual_content, 1 for explicit and 2 for implicit: ",
         "women_denigration": "\nAdd 0 for no denigration 1 for yes: ",
