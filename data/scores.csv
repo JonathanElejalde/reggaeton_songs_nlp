@@ -1,3 +1,13 @@
-,model,parameters,accuracy,recall
-0,logistic regression,{'C': 1.0},0.6683333333333333,0.6857142857142857
-1,naive bayes,,0.7566666666666667,0.7432432432432432
+model,parameters,accuracy,recall
+logistic regression - BoW,{'C': 1.0},0.6683333333333333,0.6857142857142857
+naive bayes - BoW,,0.7566666666666667,0.7432432432432432
+logistic regression - Bag of n-grams,{'C': 1.0},0.6966666666666667,0.7213114754098361
+naive bayes - Bag of ngrams,,0.695,0.6457765667574932
+logistic regression - Bag of n-grams - tfidf,{'C': 1.0},0.7433333333333333,0.7481751824817519
+naive bayes - Bag of ngrams,,0.7716666666666666,0.744408945686901
+naive bayes - Bag of ngrams - tfidf,,0.7716666666666666,0.744408945686901
+svm,{'C': 1.0},0.7383333333333333,0.7587548638132295
+Gradient Boosting on Tfidf,"{'n_estimators': 10, 'max_features': 'sqrt', 'max_depth': 15, 'learning_rate': 0.15, 'criterion': 'mae'}",0.645,0.6666666666666666
+Gradient Boosting on count vectorizer,"{'n_estimators': 10, 'max_features': 'sqrt', 'max_depth': 15, 'learning_rate': 0.075, 'criterion': 'mae'}",0.6833333333333333,0.6811594202898551
+Gradient Boosting on 120 svd,"{'n_estimators': 10, 'max_features': 'sqrt', 'max_depth': 15, 'learning_rate': 0.2, 'criterion': 'mae'}",0.7,0.6883561643835616
+Gradient Boosting on 120 svd scaled,"{'n_estimators': 10, 'max_features': 'log2', 'max_depth': 15, 'learning_rate': 0.15, 'criterion': 'mae'}",0.7216666666666667,0.7320754716981132
