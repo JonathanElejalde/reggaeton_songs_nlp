@@ -11,3 +11,7 @@ Gradient Boosting on Tfidf,"{'n_estimators': 10, 'max_features': 'sqrt', 'max_de
 Gradient Boosting on count vectorizer,"{'n_estimators': 10, 'max_features': 'sqrt', 'max_depth': 15, 'learning_rate': 0.075, 'criterion': 'mae'}",0.6833333333333333,0.6811594202898551
 Gradient Boosting on 120 svd,"{'n_estimators': 10, 'max_features': 'sqrt', 'max_depth': 15, 'learning_rate': 0.2, 'criterion': 'mae'}",0.7,0.6883561643835616
 Gradient Boosting on 120 svd scaled,"{'n_estimators': 10, 'max_features': 'log2', 'max_depth': 15, 'learning_rate': 0.15, 'criterion': 'mae'}",0.7216666666666667,0.7320754716981132
+Gradient Boosting on Tfidf,"{'criterion': 'friedman_mse', 'learning_rate': 0.025, 'max_depth': 10, 'max_features': 'log2', 'n_estimators': 10}",0.7633333333333333,0.7624113475177305
+Gradient Boosting on cbow,"{'criterion': 'friedman_mse', 'learning_rate': 0.025, 'max_depth': 10, 'max_features': 'log2', 'n_estimators': 10}",0.7633333333333333,0.7624113475177305
+Logistic regression on cbow,"{'C': 100.0, 'penalty': 'l2'}",0.7716666666666666,0.7610921501706485
+Logistic regression on skipgram,"{'C': 10.0, 'penalty': 'l2'}",0.71,0.6907894736842105
