@@ -8,7 +8,8 @@ I evaluated the different nlp models on a hand-labeled dataset with 600 songs.
 
 - [Scraping the data](https://github.com/JonathanElejalde/reggaeton_songs_nlp/tree/main/get_songs)    
 requests - BeautifulSoup
-- [Preprocessing](https://github.com/JonathanElejalde/reggaeton_songs_nlp/tree/main/preprocessing)
+- [Preprocessing](https://github.com/JonathanElejalde/reggaeton_songs_nlp/tree/main/preprocessing)       
+Preprocessing was a big part of the project because a lot of the songs where upload using chat-language. This means, a lot of grammar and spelling errors.
   - [Text cleaning](https://github.com/JonathanElejalde/reggaeton_songs_nlp/blob/main/preprocessing/text_cleaning_spelling.py)       
   Removes numbers, special characters, repeated paragraphs and lines.
   - [Spelling correction](https://github.com/JonathanElejalde/reggaeton_songs_nlp/blob/main/preprocessing/spelling_correction.ipynb)
@@ -16,7 +17,7 @@ requests - BeautifulSoup
 - [Labeling the songs](https://github.com/JonathanElejalde/reggaeton_songs_nlp/tree/main/label_songs)
   - [Hand-labeling](https://github.com/JonathanElejalde/reggaeton_songs_nlp/blob/main/label_songs/label_songs.py)
   - [Weak supervision](https://github.com/JonathanElejalde/reggaeton_songs_nlp/blob/main/label_songs/weak_supervision.ipynb)      
-  I use snorkel for the weak supervision part
+  I used snorkel for the weak supervision part
 - [Training](https://github.com/JonathanElejalde/reggaeton_songs_nlp/tree/main/models)
   - [Bag of words](https://github.com/JonathanElejalde/reggaeton_songs_nlp/blob/main/models/bag_of_words.ipynb)      
   Trained on naive bayes and logistic regression
@@ -48,7 +49,7 @@ LSTM on lyrics embeddings (word2vec - cbow)   |  {'optimizer': 'adam', 'LSTM lay
 GRU on lyrics embeddings (word2vec - cbow)    |  {'optimizer': 'adam', 'GRU layers - units': (2, 300), 'Dense layers - units': (2, 1024), 'Dropout rate after dense layers': 0.8, 'batch_size': 128}  |  0.74 |  0.74
 
 ## Improvements
-As we can see, the scores are very can be improved a lot. These are some of the things that we can try:
+As we can see, the scores could be better. These are some of the things that we can try:
 - improve spelling correction
 - improve the language detection. We still can find english words in the corpus
 - add labeling functions using snorkel to identify non-sexual content
